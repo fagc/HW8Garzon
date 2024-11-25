@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   ADD YOUR NAME / SECTION NUMBER HERE
+ *   Francisco Garzon / COMP 400C
  *
  *   This java file contains the problem solutions of canFinish and
  *   numGroups methods.
@@ -81,8 +81,52 @@ class ProblemSolutions {
         ArrayList<Integer>[] adj = getAdjList(numExams, 
                                         prerequisites); 
 
-        // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        // start an array to track if the number of prereqs for each exam
+        int[] nodeStatus = new int[numNodes];
+
+        // checking each node for cycles
+        for(int i = 0; i < numNodes; i++){
+            adj[i] = new ArrayList<Integer>();
+
+        }
+
+        // building the graph and computing for each node
+        for (int[] edge : prerequisites){
+            adj[edge[1]].add(edge[0]);
+            nodeStatus[edge[0]]++;
+        }
+
+        // initializing a queue to process the nodes with zeros
+        Queue<Integer> queue1 = new LinkedList<>();
+
+        // enqueuing all nodes with in degree 0
+        for (int i = 0; i < numNodes; i++){
+            if(nodeStatus[i] == 0){
+                queue1.add(i);
+            }
+        }
+
+        // numbers of exams that can be completed
+        int examsLeft = 0;
+
+        // if not all exams can be process, it indicates a cycle
+        while (!queue1.isEmpty()){
+            int node = queue1.poll();
+            examsLeft++;
+
+            // processing all neighbors of the curr node
+            for (int neighbor : adj[node]){
+                // decreasing neighbor
+                nodeStatus[neighbor]--;
+                if (nodeStatus[neighbor] == 0){
+                    // enqueuing neighbor if is zero
+                    queue1.add(neighbor);
+
+                }
+            }
+        }
+        // if all exams can be completed, returns true
+        return examsLeft == numNodes;
 
     }
 
