@@ -234,9 +234,47 @@ class ProblemSolutions {
             }
         }
 
-        // YOUR CODE GOES HERE - you can add helper methods, you do not need
-        // to put all code in this method.
-        return -1;
+        // array to track visited nodes
+        boolean[] visitedNodes = new boolean[numNodes];
+
+        // counting all groups of connected nodes
+        int connectedGroups = 0;
+
+        for (int node = 0; node < numNodes; node++){
+            if (!visitedNodes[node]){
+
+                // start depth search helper from this node if it hasnt been visited
+                depthSearch(node, graph, visitedNodes);
+                connectedGroups++;
+            }
+        }
+        // returning the total number of groups
+        return connectedGroups;
+    }
+
+    /**
+     *  Depth First Search helper
+     * @param node which is the node to explore
+     * @param graph adj list of the graph
+     * @param visited track visited nodes
+     */
+    private void depthSearch(int node, Map<Integer, List<Integer>> graph, boolean[] visited) {
+        // first marking the curr node as visited
+        visited[node] = true;
+
+        // getting list of neighbors of the curr node
+        List<Integer> nodeNeighbors = graph.get(node);
+
+        // check if the node has neighbors present in the graph
+        if (nodeNeighbors != null){
+            // iterating through it
+            for (int neighbor : nodeNeighbors){
+                if(!visited[neighbor]){
+                    // performing the depth search
+                    depthSearch(neighbor, graph, visited);
+                }
+            }
+        }
     }
 
 }

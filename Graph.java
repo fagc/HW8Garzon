@@ -104,7 +104,35 @@ public class Graph {
   
   public int findRoot() {
 
+    // array to store the incoming edges for each node
+    int[] edgesOfNodes = new int[numVertices];
 
-    return -1;
+    // then calculate the current edges
+    for (int i = 0; i < numVertices; i++){
+      for (int neighboringNodes : adjListArr[i]){
+        edgesOfNodes[neighboringNodes]++;
+      }
+    }
+    // to store the index of the root node
+    int rootIndex = -1;
+    // obtaining possible root values
+    for (int i = 0; i < numVertices; i++){
+      // node with no incoming edges
+      if (edgesOfNodes[i] == 0){
+        if(rootIndex != -1){
+          // return -1 if there's multiple roots
+          return -1;
+        }
+        // setting the current node as the root
+        rootIndex = i;
+      }
+    }
+
+    // return value if the root is unique, otherwise -1
+    if (rootIndex == -1){
+      return -1;
+    }
+    // unique value at the index of the root
+    return vertexValues.get(rootIndex);
   } 
 }
